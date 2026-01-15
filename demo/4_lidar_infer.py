@@ -285,6 +285,7 @@ def main():
     model.eval()
     transform = build_transform(args.grid_size)
 
+    rng = np.random.default_rng(args.seed)
     for path in files:
         if path.suffix.lower() in {".las", ".laz"}:
             coord, color, normals, intensity = load_las(path)
@@ -296,7 +297,7 @@ def main():
             continue
 
         if args.max_points and coord.shape[0] > args.max_points:
-            idx = np.random.choice(coord.shape[0], args.max_points, replace=False)
+            idx = rng.choice(coord.shape[0], args.max_points, replace=False)
             coord = coord[idx]
             if color is not None:
                 color = color[idx]
