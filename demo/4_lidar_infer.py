@@ -220,10 +220,12 @@ def parse_args():
     parser.add_argument(
         "--data-dir",
         type=Path,
-        default=Path("/Volumes/group/LiDAR/LidarProcessing/ptv3/data/training"),
-        help="Directory containing LAS/LAZ/PLY files.",
+        default=Path(
+            "data/training/Encinitas/20190228_00716_00777_NoWaves_SouthCarlsbad_beach_cliff_ground_cropped.las"
+        ),
+        help="Directory or file containing LAS/LAZ/PLY data.",
     )
-    parser.add_argument("--out-dir", type=Path, default=Path("outputs"))
+    parser.add_argument("--out-dir", type=Path, default=Path("data/output"))
     parser.add_argument("--recursive", action="store_true", help="Search recursively.")
     parser.add_argument("--limit", type=int, default=0, help="Process at most N files.")
     parser.add_argument("--grid-size", type=float, default=0.02)
@@ -255,11 +257,14 @@ def main():
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
     if not args.data_dir.exists():
-        raise RuntimeError(f"Data dir not found: {args.data_dir}")
+        raise RuntimeError(f"Data path not found: {args.data_dir}")
 
     suffixes = {".las", ".laz", ".ply"}
-    globber = args.data_dir.rglob("*") if args.recursive else args.data_dir.glob("*")
-    files = sorted([p for p in globber if p.suffix.lower() in suffixes])
+    if args.data_dir.is_file():
+        files = [args.data_dir]
+    else:
+        globber = args.data_dir.rglob("*") if args.recursive else args.data_dir.glob("*")
+        files = sorted([p for p in globber if p.suffix.lower() in suffixes])
     if args.limit > 0:
         files = files[: args.limit]
     if not files:
