@@ -1,0 +1,28 @@
+name: sonata-win
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pytorch=2.5.0
+  - torchvision=0.20.0
+  - torchaudio=2.5.0
+  - pytorch-cuda=12.4
+  - numpy<=1.26.4  # open3d currently requires numpy < 2
+  - ninja
+  - scipy
+  - addict
+  - timm
+  - psutil
+  - huggingface_hub
+  - open3d
+  - matplotlib
+  - laspy
+  - lazrs
+  - pip:
+      - torch-scatter --find-links https://data.pyg.org/whl/torch-2.5.0+cu124.html
+      - spconv-cu124
+      # FlashAttention is not included; it is not supported on Windows.
