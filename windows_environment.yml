@@ -10,7 +10,7 @@ dependencies:
   - pytorch=2.5.0
   - torchvision=0.20.0
   - torchaudio=2.5.0
-  - pytorch-cuda=12.4
+  - pytorch-cuda=12.1
   - numpy<=1.26.4  # open3d currently requires numpy < 2
   - ninja
   - scipy
@@ -18,11 +18,12 @@ dependencies:
   - timm
   - psutil
   - huggingface_hub
-  - open3d
+  # Install open3d via pip on Windows to avoid mkl conflicts.
   - matplotlib
   - laspy
-  - lazrs
   - pip:
-      - torch-scatter --find-links https://data.pyg.org/whl/torch-2.5.0+cu124.html
-      - spconv-cu124
+      - open3d
+      - lazrs
+      - torch-scatter --find-links https://data.pyg.org/whl/torch-2.5.0+cu121.html
+      - spconv-cu121
       # FlashAttention is not included; it is not supported on Windows.
